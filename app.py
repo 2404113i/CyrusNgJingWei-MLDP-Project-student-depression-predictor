@@ -239,9 +239,15 @@ def show_main_page():
             st.markdown("<h4 style='text-align: center;'>Please answer the following questions truthfully</h4>", unsafe_allow_html=True)
             age = st.slider("Age", 18, 60, 25)
             gender = st.radio("Gender", ["Male", "Female"], horizontal=True)
-            academic_pressure = st.slider("Academic Pressure (0-5)", 0, 5, 3)
-            study_satisfaction = st.slider("Study Satisfaction (0-5)", 0, 5, 3)
-            financial_stress = st.slider("Financial Stress (1-5)", 1, 5, 3)
+            degree_options = [
+                'B.Tech', 'B.Com', 'BSc', 'BA', 'BBA', 'BE', 'BCA', 'M.Tech', 'MBA', 
+                'MSc', 'MA', 'PhD', 'MBBS', 'LLB', 'B.Ed', 'B.Pharm', 'M.Com', 
+                'Class 12', 'ME', 'M.Ed', 'M.Pharm', 'BHM', 'MD', 'LLM', 'MHM', 'Others'
+            ]
+            degree = st.selectbox("What is your highest qualification?", degree_options)
+            academic_pressure = st.slider("Academic Pressure (0:No pressure, 5: High pressure)", 0, 5, 3)
+            study_satisfaction = st.slider("Study Satisfaction (0: Not satisfied, 5: Very satisfied)", 0, 5, 3)
+            financial_stress = st.slider("Financial Stress (1: No stress, 5: Very stress)", 1, 5, 3)
             family_history = st.radio("Family History of Mental Illness", ["Yes", "No"], horizontal=True)
             suicidal_thoughts = st.radio("Have you ever had suicidal thoughts?", ["Yes", "No"], horizontal=True)
             sleep_duration = st.selectbox("Sleep Duration", ["Less than 5 hours", "5-6 hours", "7-8 hours", "More than 8 hours", "Others"])
@@ -267,7 +273,14 @@ def show_main_page():
                     if f"Dietary Habits_{dietary_habits}" in input_data: input_data[f"Dietary Habits_{dietary_habits}"] = 1
                     if suicidal_thoughts == 'Yes': input_data['Have you ever had suicidal thoughts ?_Yes'] = 1
                     if family_history == 'Yes': input_data['Family History of Mental Illness_Yes'] = 1
-                    if 'Degree_Others' in input_data: input_data['Degree_Others'] = 1
+                    # create the column name based on user's selection
+                    degree_column_name = f"Degree_{degree}"
+                    # check if this column exists in the model's features
+                    if degree_column_name in input_data:
+                        input_data[degree_column_name] = 1
+                    else:
+                        # if user selected 'Others', default to 'Others'
+                        input_data['Degree_Others'] = 1
                     input_df = pd.DataFrame([input_data])[model_features]
 
                     # prediction
