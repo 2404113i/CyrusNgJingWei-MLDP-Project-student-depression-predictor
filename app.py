@@ -245,7 +245,7 @@ def show_main_page():
                 'Class 12', 'ME', 'M.Ed', 'M.Pharm', 'BHM', 'MD', 'LLM', 'MHM', 'Others'
             ]
             degree = st.selectbox("What is your highest qualification?", degree_options)
-            academic_pressure = st.slider("Academic Pressure (0:No pressure, 5: High pressure)", 0, 5, 3)
+            academic_pressure = st.slider("Academic Pressure (0: No pressure, 5: High pressure)", 0, 5, 3)
             study_satisfaction = st.slider("Study Satisfaction (0: Not satisfied, 5: Very satisfied)", 0, 5, 3)
             financial_stress = st.slider("Financial Stress (1: No stress, 5: Very stress)", 1, 5, 3)
             family_history = st.radio("Family History of Mental Illness", ["Yes", "No"], horizontal=True)
