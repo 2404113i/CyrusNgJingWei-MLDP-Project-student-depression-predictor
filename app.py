@@ -41,7 +41,7 @@ st.markdown("""
 
     /* general body styling */
     .stApp {
-        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("https://images.unsplash.com/photo-1558537112-ed307f81124c?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); /* background image with overlay to not make the background image be the main focus */
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("https://images.unsplash.com/photo-1558537112-ed307f81124c?q=80&w=1770&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); /* background image with overlay to not make the background image be the main focus */
         background-size: cover;
         background-position: center;
         color: #FFFFFF;
@@ -202,9 +202,7 @@ if 'page' not in st.session_state:
 
 
 def show_main_page():
-    """
-    Function to display the main page with introduction and prediction form.
-    """
+    # Function to display the main page with introduction and prediction form.
     # main title 
     st.markdown("<h1 style='text-align: center;'>🧘🏻‍♀️ Student Depression Predictor</h1>", unsafe_allow_html=True)
 
@@ -237,22 +235,30 @@ def show_main_page():
     with right_column:
         with st.form("prediction_form"):
             st.markdown("<h4 style='text-align: center;'>Please answer the following questions truthfully</h4>", unsafe_allow_html=True)
-            age = st.slider("Age", 18, 60, 25)
-            gender = st.radio("Gender", ["Male", "Female"], horizontal=True)
+            
+            # help tooltips for each input field - to make the website more user-friendly.
+            age = st.slider("Age", 18, 60, 25, help="Please select your current age.")
+            gender = st.radio("Gender", ["Male", "Female"], horizontal=True, help="Please select your gender.")
+            
             degree_options = [
                 'B.Tech', 'B.Com', 'BSc', 'BA', 'BBA', 'BE', 'BCA', 'M.Tech', 'MBA', 
                 'MSc', 'MA', 'PhD', 'MBBS', 'LLB', 'B.Ed', 'B.Pharm', 'M.Com', 
                 'Class 12', 'ME', 'M.Ed', 'M.Pharm', 'BHM', 'MD', 'LLM', 'MHM', 'Others'
             ]
-            degree = st.selectbox("What is your highest qualification?", degree_options)
-            academic_pressure = st.slider("Academic Pressure (0: No pressure, 5: High pressure)", 0, 5, 3)
-            study_satisfaction = st.slider("Study Satisfaction (0: Not satisfied, 5: Very satisfied)", 0, 5, 3)
-            financial_stress = st.slider("Financial Stress (1: No stress, 5: Very stress)", 1, 5, 3)
-            family_history = st.radio("Family History of Mental Illness", ["Yes", "No"], horizontal=True)
-            suicidal_thoughts = st.radio("Have you ever had suicidal thoughts?", ["Yes", "No"], horizontal=True)
-            sleep_duration = st.selectbox("Sleep Duration", ["Less than 5 hours", "5-6 hours", "7-8 hours", "More than 8 hours", "Others"])
-            dietary_habits = st.selectbox("Dietary Habits", ["Healthy", "Moderate", "Unhealthy", "Others"])
-            work_study_hours = st.slider("Work/Study Hours per Day", 0, 12, 6)
+            degree = st.selectbox("Highest Qualification", degree_options, help="Please select your highest current or completed qualification.")
+            
+            academic_pressure = st.slider("Academic Pressure", 0, 5, 3, help="Rate your current academic pressure on a scale of 0 to 5, where 0 is no pressure and 5 is very high pressure.")
+            study_satisfaction = st.slider("Study Satisfaction", 0, 5, 3, help="Rate your satisfaction with your studies on a scale of 0 to 5, where 0 is not satisfied at all and 5 is very satisfied.")
+            financial_stress = st.slider("Financial Stress", 1, 5, 3, help="Rate your level of financial stress on a scale of 1 to 5, where 1 is no stress and 5 is very high stress.")
+            
+            family_history = st.radio("Family History of Mental Illness", ["Yes", "No"], horizontal=True, help="Has anyone in your family been diagnosed with a mental illness?")
+            suicidal_thoughts = st.radio("History of Suicidal Thoughts", ["Yes", "No"], horizontal=True, help="Have you ever experienced suicidal thoughts?")
+            
+            sleep_duration = st.selectbox("Average Sleep Duration", ["Less than 5 hours", "5-6 hours", "7-8 hours", "More than 8 hours", "Others"], help="On average, how many hours of sleep do you get per night?")
+            dietary_habits = st.selectbox("Dietary Habits", ["Healthy", "Moderate", "Unhealthy", "Others"], help="How would you describe your typical diet?")
+            work_study_hours = st.slider("Work/Study Hours per Day", 0, 12, 6, help="On average, how many hours do you spend working or studying each day?")
+            
+
             submitted = st.form_submit_button("Predict My Depression Risk")
 
             if submitted:
@@ -302,9 +308,7 @@ def show_main_page():
 
 
 def show_results_page():
-    """
-    Function to display the results page with prediction, tips, and analysis.
-    """
+    # Function to display the results page with prediction, tips, and analysis.
     # two-column layout for the detailed results
     left_column, right_column = st.columns([1, 1.5], gap="large")
 
