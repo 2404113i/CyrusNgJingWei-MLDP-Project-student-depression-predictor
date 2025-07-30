@@ -237,7 +237,8 @@ def show_main_page():
             st.markdown("<h4 style='text-align: center;'>Please answer the following questions truthfully</h4>", unsafe_allow_html=True)
             
             # help tooltips for each input field - to make the website more user-friendly.
-            age = st.slider("Age", 18, 60, 25, help="Please select your current age.")
+            age_options = ['Young Adult (18-25)', 'Adult (26-40)', 'Senior (41-60)']
+            age = st.selectbox('Select your age group', age_options, help="Please select your current age group.")
             gender = st.radio("Gender", ["Male", "Female"], horizontal=True, help="Please select your gender.")
             
             degree_options = [
