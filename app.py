@@ -267,27 +267,62 @@ def show_main_page():
                     time.sleep(2) # simulate processing time using loading spinner
 
                     # data Preparation
+                    # 1. Get all feature names from the trained model
                     model_features = model.feature_names_in_
+                    
+                    # 2. Create a dictionary with all features initialized to 0
                     input_data = {feature: 0 for feature in model_features}
+                    
+                    # 3. Update the dictionary with the numerical inputs
                     input_data.update({
-                        'Age': age, 'Academic Pressure': float(academic_pressure),
-                        'Study Satisfaction': float(study_satisfaction), 'Financial Stress': float(financial_stress),
-                        'Work/Study Hours': float(work_study_hours), 'Work Pressure': 0.0,
-                        'CGPA': 0.0, 'Job Satisfaction': 0.0
+                        'Academic Pressure': float(academic_pressure),
+                        'Study Satisfaction': float(study_satisfaction),
+                        'Financial Stress': float(financial_stress),
+                        'Work/Study Hours': float(work_study_hours),
+                        'Work Pressure': 0.0, # Assuming default value
+                        'CGPA': 0.0, # Assuming default value
+                        'Job Satisfaction': 0.0 # Assuming default value
                     })
-                    if gender == 'Male': input_data['Gender_Male'] = 1
-                    if f"Sleep Duration_{sleep_duration}" in input_data: input_data[f"Sleep Duration_{sleep_duration}"] = 1
-                    if f"Dietary Habits_{dietary_habits}" in input_data: input_data[f"Dietary Habits_{dietary_habits}"] = 1
-                    if suicidal_thoughts == 'Yes': input_data['Have you ever had suicidal thoughts ?_Yes'] = 1
-                    if family_history == 'Yes': input_data['Family History of Mental Illness_Yes'] = 1
-                    # create the column name based on user's selection
+                    
+                    # 4. Manually set the one-hot encoded features based on user input
+                    
+                    # For Age
+                    if age == 'Adult (26-40)':
+                        input_data['Age_Adult (26-40)'] = 1
+                    elif age == 'Senior (41-60)':
+                        input_data['Age_Senior (41-60)'] = 1
+                    # 'Young Adult (18-25)' is the baseline, so no column is set to 1 if it's selected
+                    
+                    # For Gender
+                    if gender == 'Male':
+                        input_data['Gender_Male'] = 1
+                    
+                    # For Sleep Duration
+                    sleep_column_name = f"Sleep Duration_{sleep_duration}"
+                    if sleep_column_name in input_data:
+                        input_data[sleep_column_name] = 1
+                    
+                    # For Dietary Habits
+                    dietary_column_name = f"Dietary Habits_{dietary_habits}"
+                    if dietary_column_name in input_data:
+                        input_data[dietary_column_name] = 1
+                    
+                    # For Suicidal Thoughts
+                    if suicidal_thoughts == 'Yes':
+                        input_data['Have you ever had suicidal thoughts ?_Yes'] = 1
+                    
+                    # For Family History
+                    if family_history == 'Yes':
+                        input_data['Family History of Mental Illness_Yes'] = 1
+                    
+                    # For Degree
                     degree_column_name = f"Degree_{degree}"
-                    # check if this column exists in the model's features
                     if degree_column_name in input_data:
                         input_data[degree_column_name] = 1
                     else:
-                        # if user selected 'Others', default to 'Others'
-                        input_data['Degree_Others'] = 1
+                        input_data['Degree_Others'] = 1 # Fallback to 'Others' if not found
+                    
+                    # 5. Create the final DataFrame, ensuring the correct column order
                     input_df = pd.DataFrame([input_data])[model_features]
 
                     # prediction
